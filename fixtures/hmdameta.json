@@ -1,0 +1,19 @@
+{
+    "feature_names": [
+        "tract_to_msamd_income", 
+        "population", 
+        "minority_population", 
+        "number_of_owner_occupied_units", 
+        "number_of_1_to_4_family_units", 
+        "loan_amount_000s", 
+        "hud_median_family_income", 
+        "applicant_income_000s", 
+        "action_taken"
+    ],
+
+    "target_names": {
+        "1": "originated or purchased",
+        "0": "other"
+    }
+
+}
