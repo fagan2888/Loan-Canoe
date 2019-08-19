@@ -1,10 +1,10 @@
 
-===========================================================================================================                                                                                    *    *Team Paddle Your Loan Canoe: Predict This! Know Your Financing Approval Before the Lenders Do*                                          
-===========================================================================================================
+=======================================================================================================                                                 *Team Paddle Your Loan Canoe: Predict This! Know Your Financing Approval Before the Lenders Do*                                          
+=======================================================================================================
 
-
-Cohort 15 Capstone Project for the Certificate of Data Science at 
-Georgetown University School of Continuing Studies.
+**Cohort 15 Capstone Project for the Certificate of Data Science** 
+*Georgetown University School of Continuing Studies.*
+*Summmer 2019*
 
 
 Project Organization -- The directory organization for our project follows the following structure:
