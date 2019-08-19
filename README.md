@@ -1,14 +1,20 @@
 
-=======================================================================================================                                                *Team Paddle Your Loan Canoe: Predict This! Know Your Financing Approval Before the Lenders Do*  
-=======================================================================================================
+<span style="color:navy"> ===============================================================================================text</span>  
+<span style="color:blue">
+**Team:** *Paddle Your Loan Canoe:*   
+**Project:** *Predict This! Know Your Financing Approval Before the Lenders Do*
+<span style ="color:navy">
+===============================================================================================
+text</span>
 
-**Cohort 15 Capstone Project for the Certificate of Data Science**  
-*Georgetown University School of Continuing Studies.*  
+**Cohort 15:** *Capstone Project for the Certificate of Data Science*
+**Georgetown University:** *School of Continuing Studies*  
 *Summmer 2019*  
 
+--
 
-Project Organization -- The directory organization for our project follows the following structure:
-------------
+###### Project Organization -- The directory organization for our project follows the following structure:
+*------------*
 
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
