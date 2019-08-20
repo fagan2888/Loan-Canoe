@@ -11,8 +11,9 @@
 
 
 
-###### **Project Organization** -- *The directory organization for our project follows the following structure:*
+###### **Project Organization** -- The directory organization for our project follows the following structure:
 *------------*
+
 
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
