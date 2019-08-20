@@ -11,15 +11,16 @@
 
 
 
-###### **Project Organization** -- *The directory organization for our project follows the following structure:*
+###### **Project Organization** -- The directory organization for our project follows the following structure:
 *------------*
+
 
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
     │
     ├── data_structure: presents our data, from raw to processed, including wrangling transformations.
-    │
+    │   │
     │   ├── external       <- Data from third party sources, `[e.g. websites, social media, surveys, et. al.].`
     │   ├── interim        <- Intermediate data that has been transformed, `[i.e. wrangling steps]`.
     │   ├── processed      <- The final, canonical data sets for modeling, `[i.e. what we deploy in our models]`.
@@ -31,7 +32,7 @@
     │
     ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
     │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
+    │                         `01a_EDA__wrangling_intial_visuals__bbz.ipynb`.
     │
     ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
     │
@@ -41,7 +42,7 @@
     ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
     │                         generated with `pip freeze > requirements.txt`
     │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
+    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported (MAY NOT BE ABLE TO DO THIS)
     ├── src                <- Source code for use in this project.
     │   ├── __init__.py    <- Makes src a Python module
     │   │
