@@ -1,22 +1,18 @@
 
-<span style="color:navy"> ===============================================================================================
---
-<span style="color:blue">
-**Team:** *Paddle Your Loan Canoe:*   
-**Project:** *Predict This! Know Your Financing Approval Before the Lenders Do*
-<span style ="color:navy">
---
+<span style="color:navy">
+=============================================================================================== </span>  
 
-===============================================================================================
+**Team:** *Paddle Your Loan Canoe:*   
+**Project:** *Predict This! Know Your Financing Approval Before the Lenders Do* <span style="color:navy">===============================================================================================
 </span>
 
-**Cohort 15:** *Capstone Project for the Certificate of Data Science*
+**Cohort 15:** *Capstone Project for the Certificate of Data Science*  
 **Georgetown University:** *School of Continuing Studies*  
 *Summmer 2019*  
 
 
 
-###### Project Organization -- The directory organization for our project follows the following structure:
+###### **Project Organization** -- *The directory organization for our project follows the following structure:*
 *------------*
 
     ├── LICENSE
