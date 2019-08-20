@@ -1,23 +1,29 @@
 
-=======================================================================================================                                                 *Team Paddle Your Loan Canoe: Predict This! Know Your Financing Approval Before the Lenders Do*                                          
-=======================================================================================================
+<span style="color:navy">
+============================================================================</span>  
 
-**Cohort 15 Capstone Project for the Certificate of Data Science** 
-*Georgetown University School of Continuing Studies.*
-*Summmer 2019*
+**Team:** *Paddle Your Loan Canoe:*   
+**Project:** *Predict This! Know Your Financing Approval Before the Lenders Do* <span style="color:navy">============================================================================</span>
+
+**Cohort 15:** *Capstone Project for the Certificate of Data Science*  
+**Georgetown University:** *School of Continuing Studies*  
+*Summmer 2019*  
 
 
-Project Organization -- The directory organization for our project follows the following structure:
-------------
+
+###### **Project Organization** -- *The directory organization for our project follows the following structure:*
+*------------*
 
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
-    ├── data_structure
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
+    │
+    ├── data_structure: presents our data, from raw to processed, including wrangling transformations.
+    │
+    │   ├── external       <- Data from third party sources, `[e.g. websites, social media, surveys, et. al.].`
+    │   ├── interim        <- Intermediate data that has been transformed, `[i.e. wrangling steps]`.
+    │   ├── processed      <- The final, canonical data sets for modeling, `[i.e. what we deploy in our models]`.
+    │   └── raw            <- The original, immutable data dump, `[i.e. HMDA, other government agencies]`.
     │
     ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
     │
