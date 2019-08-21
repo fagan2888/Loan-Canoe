@@ -11,7 +11,7 @@
 
 
 
-###### **Project Organization** -- The directory organization for our project follows the following structure:
+##### **Project Organization** -- The directory organization for our project follows the following structure:  
 *------------*
 
 
