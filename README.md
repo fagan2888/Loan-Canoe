@@ -19,7 +19,9 @@
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
     │
-    ├── data_structure: presents our data, from raw to processed, including wrangling transformations.
+    ├── data_structure: presents our data, from raw to processed, including wrangling transformations. 
+    │   │
+    │   ├── dbms           <- The setup and layout of the AWS RDS with PostgreSQL we deployed.
     │   │
     │   ├── external       <- Data from third party sources, `[e.g. websites, social media, surveys, et. al.].`
     │   ├── interim        <- Intermediate data that has been transformed, `[i.e. wrangling steps]`.
@@ -30,9 +32,9 @@
     │
     ├── models             <- Trained and serialized models, model predictions, or model summaries
     │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `01a_EDA__wrangling_intial_visuals__bbz.ipynb`.
+    ├── notebooks          <- Jupyter notebooks and SQL scripts called in our notebooks. Naming  
+    │                         convention is a number (for ordering), a short `_` delimited description,
+    │                         and the he creator's initials, e.g. 01a_EDA__wrangling_intial_visuals__bbz.ipynb`.
     │
     ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
     │
