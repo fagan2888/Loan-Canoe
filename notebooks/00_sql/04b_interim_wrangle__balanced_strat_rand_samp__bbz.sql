@@ -4,7 +4,7 @@
 /*                                                                                                                */
 /* Author: Blake Zenuni, Summer 2019                                                                              */
 /* Date Created:  Aug 1, 2019                                                                                     */
-/* Last Modified: Aub 29, 2019                                                                                    */
+/* Last Modified: Aub 30, 2019                                                                                    */
 /*                                                                                                                */
 /******************************************************************************************************************/
 
@@ -30,3 +30,4 @@
 /*========================== 04b. Stratified Random Samples, Balanced for HMDA 2009-2010 =============================*/
 /*============================================= END 04b - SQL Script  ================================================*/
 
+*note to self: add logic flow with partition over() here
