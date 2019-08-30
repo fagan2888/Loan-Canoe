@@ -14,13 +14,13 @@
 /*---------------------------------------------------------------------------------------------------------*/
 
 
- -- NB1: Simple random samples are unbalanced for outcomes
- -- NB2: Stratified random samples are bucketed by household income (strata) + balanced two ways (see below)
+ -- NB1: In this SQL script, simple random samples are unbalanced for outcomes.
+ -- NB2: Script 03b applies this same logic, but for balanced outcomes (50/50 loans approved vs. loans denied).
 
 
 
 
-/*=================================== A. Simple random samples for HMDA 2009-2010 ====================================*/
+/*================================== 03a. Simple random samples for HMDA 2009-2010 ===================================*/
 
 
 -- Creating schema and setting users/role for accessibility profiles
@@ -433,19 +433,4 @@ SELECT hm_u.*
 
 
 
-/*** ============================================== END SQL Script  =============================================== ***/
-
-
-
-
-
-SELECT DISTINCT action_taken_name from hmda_lar_2009_allrecords ;
-select * from hmda_lar_2009_allrecords where tract_to_msamd_income ;
-select applicant_income_000s from hmda_lar_2009_allrecords limit 10 ;
-select distinct hm09.msa from hmda_lar_2009_allrecords hm09
-
-CAST( CAST( CASE WHEN hm09.tract_to_msamd_income = '' ELSE hm09.tract_to_msamd_income END
-                      As varchar(5)
-                  ) As NUMERIC --NB: must be numeric because numeric stores decimal places, INT is whole numbers only
-           )
-       As tract_to_masamd_income,
+/*** =========================================== END 03a - SQL Script  ============================================ ***/
