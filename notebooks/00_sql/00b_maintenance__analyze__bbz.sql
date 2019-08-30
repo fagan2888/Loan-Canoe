@@ -7,7 +7,28 @@
     /* Author: Blake Zenuni, Aug. 2019*/
 
 
---quick spot checks on one table
+/*** -------------- PostgreSQL database dump -------------- ***/
+-- Dumped by Import Data From File in Datagrip
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+--
+SET synchronous_commit TO off;
+--
+SET synchronous_commit TO ON;
+--
+-- Name: rpo; Type: SCHEMA; Schema: -; Owner: -
+--
+/*** -------------- END PostgreSQL database dump ---- ***/
+
+
+
+--> quick spot checks on one table
 select loan_amount_000s
   from paddle_loan_canoe.usa_mortgage_market.hmda_lar_2015_allrecords
   where loan_amount_000s <100000
@@ -15,7 +36,7 @@ select loan_amount_000s
 select * from paddle_loan_canoe.usa_mortgage_market.hmda_la_2008_allrecordsr order by random() limit 50000 ;
 --
 
---sophisticated queries for temporary files maintenance
+--> sophisticated queries for temporary files maintenance
 SELECT temp_files AS "Temporary files"
      , temp_bytes AS "Size of temporary files"
 FROM   pg_stat_database db;
@@ -139,6 +160,22 @@ FROM (
     WHERE relkind = 'r'
   ) a
 ) a;
+----
+    --First, check all the processes that are running:
+SELECT * FROM pg_stat_activity WHERE state = 'active';
+    --So you can identify the PID of the hanging query you want to terminate, run this:
+SELECT pg_cancel_backend(PID);
+    --This query might take a while to kill the query, so if you want to kill it the hard way, run this instead:
+SELECT pg_terminate_backend(PID);
 --
+SELECT * FROM pg_stat_activity WHERE wait_event IS NOT NULL AND backend_type = 'client backend'
+;
+SELECT * FROM pg_stat_activity
+WHERE pid IN (SELECT pg_blocking_pids(/*<pid of blocked query>*/))
+;
+SELECT n_live_tup, n_dead_tup from pg_stat_user_tables where relname = 'hmda_lar_2014_allrecords'
+;
+----
+
 /*----*/
 /*--------------------------------------------------------------------------------------------------------------------*/
