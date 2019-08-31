@@ -1,12 +1,12 @@
-/***************************************************************************************************************/
-/* Purpose:  (1) Typecast transform & Generate Simple, Unbalanced Random Samples for each year for ingestion   */
-/*               + (2) Union all the samples for the interim dataset for additional wrangling with pandas      */                                                                                           */
-/*                                                                                                             */
-/* Author: Blake Zenuni, Summer 2019                                                                           */
-/* Date Created:  Aug 1, 2019                                                                                  */
-/* Last Modified: Aub 29, 2019                                                                                 */
-/*                                                                                                             */
-/***************************************************************************************************************/
+/**********************************************************************************************************************/
+/* Purpose:  (1) Typecast transform & Generate Simple, Unbalanced Random Samples for each year for ingestion          */
+/*               + (2) Union all the samples for the interim dataset for additional wrangling with pandas             */                                                                                           */
+/*                                                                                                                    */
+/* Author: Blake Zenuni, Summer 2019                                                                                  */
+/* Date Created:  Aug 01, 2019                                                                                        */
+/* Last Modified: Aub 30, 2019                                                                                       */
+/*                                                                                                                    */
+/**********************************************************************************************************************/
 
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -423,6 +423,20 @@ SELECT
 
 
 
+/*------------------ UNION ALL HMDA 2014 & HMDA 2015 -----------------*/
+WITH
+   hmda_union_2014_2015 AS
+   ( SELECT hm14.* FROM interim_datasets.hmda_lar_2014_simplerand25k hm14
+        UNION ALL
+     SELECT hm15.* FROM interim_datasets.hmda_lar_2015_simplerand25k hm15
+   )
+SELECT hm_u.*
+  INTO interim_datasets.hmda_lar_union_2014_2015_simplerand50k
+  FROM hmda_union_2014_2015 hm_u
+;
+/*---------------- end UNION ALL HMDA 2016 & HMDA 2017 ---------------*/
+
+
 
 
 /*----------------------------------------------------- HMDA 2016 ----------------------------------------------------*/
@@ -459,6 +473,7 @@ SELECT
   ORDER BY random() LIMIT 25000
 ;
 /*--------------------------- end HMDA 2016 ---------------------------*/
+
 
 
 /*----------------------------------------------------- HMDA 2017 ----------------------------------------------------*/
