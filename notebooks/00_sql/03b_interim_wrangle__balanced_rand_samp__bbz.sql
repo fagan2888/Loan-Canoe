@@ -607,12 +607,12 @@ FROM hmda_2015_balanced hm15_bal
                 WITH
                    hmda_union_2014_2015 AS
                    (
-                     SELECT hm14.* FROM interim_datasets.hmda_lar_ii_2011_randsimpl_bal25k hm11
+                     SELECT hm14.* FROM interim_datasets.hmda_lar_ii_2014_randsimpl_bal25k hm14
                         UNION ALL
-                     SELECT hm15.* FROM interim_datasets.hmda_lar_ii_2012_randsimpl_bal25k hm12
+                     SELECT hm15.* FROM interim_datasets.hmda_lar_ii_2015_randsimpl_bal25k hm15
                    )
                 SELECT hm_u.*
-                  INTO interim_datasets.hmda_lar_ii_union_2014_to_2015_simplerand50k
+                  INTO interim_datasets.hmda_lar_union_ii_2014_to_2015_simplerand_bal50k
                   FROM hmda_union_2014_2015 hm_u
                 ;
         /*-------------------------------------------------------------------------------------*/
@@ -797,12 +797,12 @@ FROM hmda_2017_balanced hm17_bal
                 WITH
                    hmda_union_2016_2017 AS
                    (
-                     SELECT hm16.* FROM interim_datasets.hmda_lar_ii_2016_simplerand25k hm16
+                     SELECT hm16.* FROM interim_datasets.hmda_lar_ii_2016_randsimpl_bal25k hm16
                         UNION ALL
-                     SELECT hm17.* FROM interim_datasets.hmda_lar_ii_2017_simplerand25k hm17
+                     SELECT hm17.* FROM interim_datasets.hmda_lar_ii_2017_randsimpl_bal25k hm17
                    )
                 SELECT hm_u.*
-                  INTO interim_datasets.hmda_lar_ii_union_2016_to_2017_simplerand50k
+                  INTO interim_datasets.hmda_lar_ii_union_2016_to_2017_simplerand_bal50k
                   FROM hmda_union_2016_2017 hm_u
                 ;
         /*-------------------------------------------------------------------------------------*/
@@ -812,6 +812,109 @@ FROM hmda_2017_balanced hm17_bal
 
 
 
+
+/* Lastly, we use pg_catalogue (or dblink_connect across pgsql databases) to ingest the UNION tbls into one pgsql db */
+
+--> hmda 2011-2013 from pgsql AWS RDS "z_tn_AWS_paddleloancanoe"
+create table interim_datasets.hmda_lar_union_ii_2011_to_2013_simplerand_bal75k
+     (
+     	action_taken integer,
+     	action_year integer,
+     	tract_to_masamd_income numeric(1000,2),
+     	population integer,
+     	min_pop_perc numeric(1000,2),
+     	num_owoc_units integer,
+     	num_1to4_fam_units integer,
+     	ln_amt_000s integer,
+     	hud_med_fm_inc integer,
+     	applic_inc_000s integer,
+     	own_occ_nm varchar,
+     	ln_type_nm varchar(56),
+     	lien_status_nm varchar(56),
+     	hoep_status_nm varchar(56),
+     	co_appl_sex varchar(28),
+     	co_appl_race varchar(28),
+     	co_appl_ethn varchar(28),
+     	applic_sex varchar(28),
+     	applic_race varchar(28),
+     	applic_ethn varchar(28),
+     	agency_abbr varchar(28)
+     )
+;
+set search_path = "pg_catalog"
+;
+set search_path = "interim_datasets"
+;
+SELECT CAST(reltuples as INT) as rows
+FROM pg_catalog.pg_class C
+LEFT JOIN pg_catalog.pg_namespace N ON (N.oid = C.relnamespace)
+ WHERE (relkind = 'r' OR relkind = 'v')
+   AND nspname LIKE 'interim#_datasets' ESCAPE '#'
+   AND relname LIKE 'hmda#_lar#_union#_ii#_2011#_to#_2013#_simplerand#_bal75k' ESCAPE '#'
+;
+---> end of hmda 2011-2013
+
+--> hmda 2016-2017 from pgsql AWS RDS "z_ak_AWS_paddleloancanoe"
+create table interim_datasets.hmda_lar_union_ii_2016_to_2017_simplerand_bal75k
+     (
+     	action_taken integer,
+     	action_year integer,
+     	tract_to_masamd_income numeric(1000,2),
+     	population integer,
+     	min_pop_perc numeric(1000,2),
+     	num_owoc_units integer,
+     	num_1to4_fam_units integer,
+     	ln_amt_000s integer,
+     	hud_med_fm_inc integer,
+     	applic_inc_000s integer,
+     	own_occ_nm varchar,
+     	ln_type_nm varchar(56),
+     	lien_status_nm varchar(56),
+     	hoep_status_nm varchar(56),
+     	co_appl_sex varchar(28),
+     	co_appl_race varchar(28),
+     	co_appl_ethn varchar(28),
+     	applic_sex varchar(28),
+     	applic_race varchar(28),
+     	applic_ethn varchar(28),
+     	agency_abbr varchar(28)
+     )
+;
+set search_path = "pg_catalog"
+;
+set search_path = "interim_datasets"
+;
+SELECT CAST(reltuples as INT) as rows
+FROM pg_catalog.pg_class C
+LEFT JOIN pg_catalog.pg_namespace N ON (N.oid = C.relnamespace)
+ WHERE (relkind = 'r' OR relkind = 'v')
+   AND nspname LIKE 'interim#_datasets' ESCAPE '#'
+   AND relname LIKE 'hmda#_lar#_union#_ii#_2016#_to#_2017#_simplerand#_bal75k' ESCAPE '#'
+;
+---> end of hmda 2016-2017
+
+
+
+        /*------------------------------------------ UNION ALL 2010-2017 ------------------------------------------*/
+                ;
+                WITH
+                   hmda_union_2010_2017 AS
+                   (
+                     SELECT hm10.* FROM interim_datasets.hmda_lar_2010_simplerand25k hm10
+                        UNION ALL
+                     SELECT hm11_13.* FROM interim_datasets.hmda_lar_union_2011_to_2013_simplerand75k hm11_13
+                        UNION ALL
+                     SELECT hm14_15.* FROM interim_datasets.hmda_lar_union_2014_to_2015_simplerand50k hm14_15
+                        UNION ALL
+                     SELECT hm16_17.* FROM interim_datasets.hmda_lar_union_2016_to_2017_simplerand50k hm16_17
+                   )
+                SELECT hm_u.*
+                  INTO interim_datasets.interim_hmda_lar_union_2010_to_2017_simplerand200k
+                  FROM hmda_union_2010_2017 hm_u
+                ;
+        /*---------------------------------------------------------------------------------------------------------*/
+
+/*----------------*/
 
 
 /*** =========================================== END 03b - SQL Script  ============================================ ***/
