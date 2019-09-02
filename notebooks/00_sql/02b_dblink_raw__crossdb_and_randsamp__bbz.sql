@@ -129,7 +129,7 @@ FROM raw_datasets.dblink('user=reporting_user dbname=postgres port=5432
         /*--- HMDA 2010 ---*/
         SELECT hm10.*
           INTO raw_datasets.hmda_lar_2010_raw_rand_lm100
-          FROM ppaddle_loan_canoe.usa_mortgage_market.hmda_lar_2010_allrecords hm10
+          FROM paddle_loan_canoe.usa_mortgage_market.hmda_lar_2010_allrecords hm10
           ORDER BY random()
         LIMIT 100
         ;
