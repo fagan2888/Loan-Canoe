@@ -298,7 +298,7 @@ SELECT
   ROUND(hm14.minority_population, 2) As min_pop_perc, hm14.number_of_owner_occupied_units As num_owoc_units,
   hm14.number_of_1_to_4_family_units As num_1to4_fam_units, hm14.loan_amount_000s As ln_amt_000s,
   hm14.hud_median_family_income As hud_med_fm_inc,
-  CAST( CAST( CASE WHEN hm14.applicant_income_000s = '' THEN NULL ELSE hm14.applicant_income_000s END
+  CAST( CAST( CASE WHEN hm14.applicant_income_000s IS NULL THEN NULL ELSE hm14.applicant_income_000s END
                 As Varchar(5) ) As INT) As applic_inc_000s,
   CAST(hm14.owner_occupancy_name As VARCHAR(148)) As own_occ_nm,
   CAST(hm14.loan_type_name As VARCHAR(56)) As ln_type_nm, CAST(hm14.lien_status_name As VARCHAR(56)) As lien_status_nm,

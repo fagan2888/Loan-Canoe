@@ -29,6 +29,7 @@
 
 
 -- Creating schema and setting users/role for accessibility profiles
+CREATE EXTENSION dblink;
 CREATE SCHEMA interim_datasets ;
 CREATE ROLE reporting_user WITH LOGIN PASSWORD 'team_loan_canoe2019' ;
 GRANT USAGE ON SCHEMA interim_datasets TO reporting_user ;
@@ -396,7 +397,7 @@ WITH
 SELECT hm13_bal.*
 INTO interim_datasets.hmda_lar_ii_2013_randsimpl_bal25k
 FROM hmda_2013_balanced hm13_bal
-:
+;
 /*--------------------------- end HMDA 2013 ---------------------------*/
 
 
@@ -414,7 +415,7 @@ FROM hmda_2013_balanced hm13_bal
                      SELECT hm13.* FROM interim_datasets.hmda_lar_ii_2013_randsimpl_bal25k hm13
                    )
                 SELECT hm_u.*
-                  INTO interim_datasets.hmda_lar_ii_union_2011_to_2013_simplerand75k
+                  INTO interim_datasets.hmda_lar_union_ii_2011_to_2013_simplerand_bal75k
                   FROM hmda_union_2011_2013 hm_u
                 ;
         /*-------------------------------------------------------------------------------------*/
@@ -427,6 +428,13 @@ FROM hmda_2013_balanced hm13_bal
 
 
 --> z_bz_AWS_paddleloancanoe <---
+    --
+CREATE EXTENSION dblink;
+CREATE SCHEMA raw_datasets ;
+CREATE ROLE reporting_user WITH LOGIN PASSWORD 'team_loan_canoe2019' ;
+GRANT USAGE ON SCHEMA raw_datasets TO reporting_user ;
+GRANT SELECT ON ALL TABLES IN SCHEMA raw_datasets TO reporting_user ;
+    --
 
 /*----------------------------------------------------- HMDA 2014 ----------------------------------------------------*/
 IF OBJECT_ID('interim_datasets.hmda_lar_ii_2014_randsimpl_bal25k') EXISTS
@@ -447,7 +455,7 @@ WITH
            hm14.number_of_owner_occupied_units As num_owoc_units,
            hm14.number_of_1_to_4_family_units As num_1to4_fam_units,
            hm14.loan_amount_000s As ln_amt_000s, hm14.hud_median_family_income As hud_med_fm_inc,
-           CAST( CAST( CASE WHEN hm14.applicant_income_000s IS NULL THEN NULL ELSE hm14.applicant_income_000s END
+           CAST( CAST( CASE WHEN hm14.applicant_income_000s = '' THEN NULL ELSE hm14.applicant_income_000s END
                           As Varchar(5)) As INT) As applic_inc_000s,
            CAST(hm14.owner_occupancy_name As VARCHAR(148)) As own_occ_nm,
            CAST(hm14.loan_type_name As VARCHAR(56)) As ln_type_nm,
@@ -460,7 +468,7 @@ WITH
            CAST(hm14.applicant_race_name_1 As VARCHAR(28)) As applic_race,
            CAST(hm14.applicant_ethnicity_name As VARCHAR(28)) As applic_ethn,
            CAST(hm14.agency_abbr As VARCHAR(28)) As agency_abbr
-       FROM public.hmda_lar_2014_allrecords hm14
+       FROM paddle_loan_canoe.usa_mortgage_market .hmda_lar_2014_allrecords hm14
        WHERE hm14.action_taken_name
                  In ( 'Application approved but not accepted','Loan originated', 'Loan purchased by the institution')
        ORDER BY random() LIMIT 12500
@@ -478,7 +486,7 @@ WITH
            hm14.number_of_owner_occupied_units As num_owoc_units,
            hm14.number_of_1_to_4_family_units As num_1to4_fam_units,
            hm14.loan_amount_000s As ln_amt_000s, hm14.hud_median_family_income As hud_med_fm_inc,
-           CAST( CAST( CASE WHEN hm14.applicant_income_000s IS NULL THEN NULL ELSE hm14.applicant_income_000s END
+           CAST( CAST( CASE WHEN hm14.applicant_income_000s = '' THEN NULL ELSE hm14.applicant_income_000s END
                           As Varchar(5)) As INT) As applic_inc_000s,
            CAST(hm14.owner_occupancy_name As VARCHAR(148)) As own_occ_nm,
            CAST(hm14.loan_type_name As VARCHAR(56)) As ln_type_nm,
@@ -491,7 +499,7 @@ WITH
            CAST(hm14.applicant_race_name_1 As VARCHAR(28)) As applic_race,
            CAST(hm14.applicant_ethnicity_name As VARCHAR(28)) As applic_ethn,
            CAST(hm14.agency_abbr As VARCHAR(28)) As agency_abbr
-       FROM public.hmda_lar_2014_allrecords hm14
+       FROM paddle_loan_canoe.usa_mortgage_market.hmda_lar_2014_allrecords hm14
        WHERE hm14.action_taken_name  In ('Application denied by financial institution')
        ORDER BY random() LIMIT 12500
      ) ,
@@ -505,7 +513,7 @@ WITH
 SELECT hm14_bal.*
 INTO interim_datasets.hmda_lar_ii_2014_randsimpl_bal25k
 FROM hmda_2014_balanced hm14_bal
-:
+;
 /*--------------------------- end HMDA 2014 ---------------------------*/
 
 
@@ -542,7 +550,7 @@ WITH
            CAST(hm15.applicant_race_name_1 As VARCHAR(28)) As applic_race,
            CAST(hm15.applicant_ethnicity_name As VARCHAR(28)) As applic_ethn,
            CAST(hm15.agency_abbr As VARCHAR(28)) As agency_abbr
-       FROM public.hmda_lar_2015_allrecords hm15
+       FROM paddle_loan_canoe.usa_mortgage_market .hmda_lar_2015_allrecords hm15
        WHERE hm15.action_taken_name
                  In ( 'Application approved but not accepted','Loan originated', 'Loan purchased by the institution')
        ORDER BY random() LIMIT 12500
@@ -573,7 +581,7 @@ WITH
            CAST(hm15.applicant_race_name_1 As VARCHAR(28)) As applic_race,
            CAST(hm15.applicant_ethnicity_name As VARCHAR(28)) As applic_ethn,
            CAST(hm15.agency_abbr As VARCHAR(28)) As agency_abbr
-       FROM public.hmda_lar_2015_allrecords hm15
+       FROM paddle_loan_canoe.usa_mortgage_market.hmda_lar_2015_allrecords hm15
        WHERE hm15.action_taken_name  In ('Application denied by financial institution')
        ORDER BY random() LIMIT 12500
      ) ,
@@ -587,7 +595,8 @@ WITH
 SELECT hm15_bal.*
 INTO interim_datasets.hmda_lar_ii_2015_randsimpl_bal25k
 FROM hmda_2015_balanced hm15_bal
-:
+;
+
 /*--------------------------- end HMDA 2015 ---------------------------*/
 
 
@@ -618,76 +627,167 @@ FROM hmda_2015_balanced hm15_bal
 --> z_ak_AWS_paddleloancanoe <---
 
 /*----------------------------------------------------- HMDA 2016 ----------------------------------------------------*/
-IF OBJECT_ID('interim_datasets.hmda_lar_2016_simplerand25k') EXISTS
-  DROP TABLE interim_datasets.hmda_lar_2016_simplerand25k
+IF OBJECT_ID('interim_datasets.hmda_lar_ii_2016_randsimpl_bal25k') EXISTS
+  DROP TABLE interim_datasets.hmda_lar_ii_2016_randsimpl_bal25k
 ;
-SELECT
-  CAST( CASE WHEN hm16.action_taken_name In ( 'Application approved but not accepted', 'Loan originated',
-                                              'Loan purchased by the institution' ) THEN 1
-             WHEN hm16.action_taken_name = 'Application denied by financial institution' THEN 0
-        END As INT) As action_taken, hm16.as_of_year As action_year,
-  CAST( CAST( CASE WHEN hm16.tract_to_msamd_income IS NULL THEN NULL ELSE hm16.tract_to_msamd_income END
-                As Varchar(5)) As NUMERIC ) As tract_to_masamd_income, hm16.population,
-  ROUND(hm16.minority_population, 2) As min_pop_perc, hm16.number_of_owner_occupied_units As num_owoc_units,
-  hm16.number_of_1_to_4_family_units As num_1to4_fam_units, hm16.loan_amount_000s As ln_amt_000s,
-  hm16.hud_median_family_income As hud_med_fm_inc,
-  CAST( CAST( CASE WHEN hm16.applicant_income_000s = '' THEN NULL ELSE hm16.applicant_income_000s END
-                As Varchar(5) ) As INT) As applic_inc_000s,
-  CAST(hm16.owner_occupancy_name As VARCHAR(128)) As own_occ_nm,
-  CAST(hm16.loan_type_name As VARCHAR(56)) As ln_type_nm, CAST(hm16.lien_status_name As VARCHAR(56)) As lien_status_nm,
-  CAST(hm16.hoepa_status_name As VARCHAR(56)) As hoep_status_nm,
-  CAST(hm16.co_applicant_sex_name As VARCHAR(28)) As co_appl_sex,
-  CAST(hm16.co_applicant_race_name_1 As VARCHAR(28)) As co_appl_race,
-  CAST(hm16.co_applicant_ethnicity_name As VARCHAR(28)) As co_appl_ethn,
-  CAST(hm16.co_applicant_sex_name As VARCHAR(28)) As applic_sex,
-  CAST(hm16.applicant_race_name_1 As VARCHAR(28)) As applic_race,
-  CAST(hm16.applicant_ethnicity_name As VARCHAR(28)) As applic_ethn,
-  CAST(hm16.agency_abbr As VARCHAR(28)) As agency_abbr
-  INTO interim_datasets.hmda_lar_2016_simplerand25k
-  FROM hmda_lar_2016_allrecords hm16
-  WHERE hm16.action_taken_name
-          In ( 'Application approved but not accepted', 'Application denied by financial institution',
-               'Loan originated', 'Loan purchased by the institution')
-  ORDER BY random() LIMIT 25000
+--
+WITH
+
+     hmda_2016_approved As
+     ( SELECT
+           1 As action_taken, hm16.as_of_year As action_year,
+           CAST( CAST( CASE WHEN hm16.tract_to_msamd_income IS NULL THEN NULL ELSE hm16.tract_to_msamd_income END
+                          As Varchar(5)
+                      ) As NUMERIC
+               )
+           As tract_to_masamd_income,
+           hm16.population, ROUND(hm16.minority_population, 2) As min_pop_perc,
+           hm16.number_of_owner_occupied_units As num_owoc_units,
+           hm16.number_of_1_to_4_family_units As num_1to4_fam_units,
+           hm16.loan_amount_000s As ln_amt_000s, hm16.hud_median_family_income As hud_med_fm_inc,
+           CAST( CAST( CASE WHEN hm16.applicant_income_000s = '' THEN NULL ELSE hm16.applicant_income_000s END
+                          As Varchar(5)) As INT) As applic_inc_000s,
+           CAST(hm16.owner_occupancy_name As VARCHAR(168)) As own_occ_nm,
+           CAST(hm16.loan_type_name As VARCHAR(56)) As ln_type_nm,
+           CAST(hm16.lien_status_name As VARCHAR(56)) As lien_status_nm,
+           CAST(hm16.hoepa_status_name As VARCHAR(56)) As hoep_status_nm,
+           CAST(hm16.co_applicant_sex_name As VARCHAR(28)) As co_appl_sex,
+           CAST(hm16.co_applicant_race_name_1 As VARCHAR(28)) As co_appl_race,
+           CAST(hm16.co_applicant_ethnicity_name As VARCHAR(28)) As co_appl_ethn,
+           CAST(hm16.co_applicant_sex_name As VARCHAR(28)) As applic_sex,
+           CAST(hm16.applicant_race_name_1 As VARCHAR(28)) As applic_race,
+           CAST(hm16.applicant_ethnicity_name As VARCHAR(28)) As applic_ethn,
+           CAST(hm16.agency_abbr As VARCHAR(28)) As agency_abbr
+       FROM paddle_loan_canoe.usa_mortgage_market .hmda_lar_2016_allrecords hm16
+       WHERE hm16.action_taken_name
+                 In ( 'Application approved but not accepted','Loan originated', 'Loan purchased by the institution')
+       ORDER BY random() LIMIT 12500
+     ) ,
+
+     hmda_2016_denied As
+     ( SELECT
+           0 As action_taken, hm16.as_of_year As action_year,
+           CAST( CAST( CASE WHEN hm16.tract_to_msamd_income IS NULL THEN NULL ELSE hm16.tract_to_msamd_income END
+                          As Varchar(5)
+                      ) As NUMERIC
+               )
+           As tract_to_masamd_income,
+           hm16.population, ROUND(hm16.minority_population, 2) As min_pop_perc,
+           hm16.number_of_owner_occupied_units As num_owoc_units,
+           hm16.number_of_1_to_4_family_units As num_1to4_fam_units,
+           hm16.loan_amount_000s As ln_amt_000s, hm16.hud_median_family_income As hud_med_fm_inc,
+           CAST( CAST( CASE WHEN hm16.applicant_income_000s = '' THEN NULL ELSE hm16.applicant_income_000s END
+                          As Varchar(5)) As INT) As applic_inc_000s,
+           CAST(hm16.owner_occupancy_name As VARCHAR(168)) As own_occ_nm,
+           CAST(hm16.loan_type_name As VARCHAR(56)) As ln_type_nm,
+           CAST(hm16.lien_status_name As VARCHAR(56)) As lien_status_nm,
+           CAST(hm16.hoepa_status_name As VARCHAR(56)) As hoep_status_nm,
+           CAST(hm16.co_applicant_sex_name As VARCHAR(28)) As co_appl_sex,
+           CAST(hm16.co_applicant_race_name_1 As VARCHAR(28)) As co_appl_race,
+           CAST(hm16.co_applicant_ethnicity_name As VARCHAR(28)) As co_appl_ethn,
+           CAST(hm16.co_applicant_sex_name As VARCHAR(28)) As applic_sex,
+           CAST(hm16.applicant_race_name_1 As VARCHAR(28)) As applic_race,
+           CAST(hm16.applicant_ethnicity_name As VARCHAR(28)) As applic_ethn,
+           CAST(hm16.agency_abbr As VARCHAR(28)) As agency_abbr
+       FROM paddle_loan_canoe.usa_mortgage_market.hmda_lar_2016_allrecords hm16
+       WHERE hm16.action_taken_name  In ('Application denied by financial institution')
+       ORDER BY random() LIMIT 12500
+     ) ,
+
+     hmda_2016_balanced AS
+     ( SELECT hm16_app.* From hmda_2016_approved hm16_app
+            UNION ALL
+       SELECT hm16_den.* FROM hmda_2016_denied hm16_den
+     )
+
+SELECT hm16_bal.*
+INTO interim_datasets.hmda_lar_ii_2016_randsimpl_bal25k
+FROM hmda_2016_balanced hm16_bal
 ;
 /*--------------------------- end HMDA 2016 ---------------------------*/
 
 
 
 /*----------------------------------------------------- HMDA 2017 ----------------------------------------------------*/
-IF OBJECT_ID('interim_datasets.hmda_lar_2017_simplerand25k') EXISTS
-  DROP TABLE interim_datasets.hmda_lar_2017_simplerand25k
+IF OBJECT_ID('interim_datasets.hmda_lar_ii_2017_randsimpl_bal25k') EXISTS
+  DROP TABLE interim_datasets.hmda_lar_ii_2017_randsimpl_bal25k
 ;
-SELECT
-  CAST( CASE WHEN hm17.action_taken_name In ( 'Application approved but not accepted', 'Loan originated',
-                                              'Loan purchased by the institution' ) THEN 1
-             WHEN hm17.action_taken_name = 'Application denied by financial institution' THEN 0
-        END As INT) As action_taken, hm17.as_of_year As action_year,
-  CAST( CAST( CASE WHEN hm17.tract_to_msamd_income IS NULL THEN NULL ELSE hm17.tract_to_msamd_income END
-                As Varchar(5)) As NUMERIC ) As tract_to_masamd_income, hm17.population,
-  ROUND(hm17.minority_population, 2) As min_pop_perc, hm17.number_of_owner_occupied_units As num_owoc_units,
-  hm17.number_of_1_to_4_family_units As num_1to4_fam_units, hm17.loan_amount_000s As ln_amt_000s,
-  hm17.hud_median_family_income As hud_med_fm_inc,
-  CAST( CAST( CASE WHEN hm17.applicant_income_000s = '' THEN NULL ELSE hm17.applicant_income_000s END
-                As Varchar(5) ) As INT) As applic_inc_000s,
-  CAST(hm17.owner_occupancy_name As VARCHAR(128)) As own_occ_nm,
-  CAST(hm17.loan_type_name As VARCHAR(56)) As ln_type_nm, CAST(hm17.lien_status_name As VARCHAR(56)) As lien_status_nm,
-  CAST(hm17.hoepa_status_name As VARCHAR(56)) As hoep_status_nm,
-  CAST(hm17.co_applicant_sex_name As VARCHAR(28)) As co_appl_sex,
-  CAST(hm17.co_applicant_race_name_1 As VARCHAR(28)) As co_appl_race,
-  CAST(hm17.co_applicant_ethnicity_name As VARCHAR(28)) As co_appl_ethn,
-  CAST(hm17.co_applicant_sex_name As VARCHAR(28)) As applic_sex,
-  CAST(hm17.applicant_race_name_1 As VARCHAR(28)) As applic_race,
-  CAST(hm17.applicant_ethnicity_name As VARCHAR(28)) As applic_ethn,
-  CAST(hm17.agency_abbr As VARCHAR(28)) As agency_abbr
-  INTO interim_datasets.hmda_lar_2017_simplerand25k
-  FROM hmda_lar_2017_allrecords hm17
-  WHERE hm17.action_taken_name
-          In ( 'Application approved but not accepted', 'Application denied by financial institution',
-               'Loan originated', 'Loan purchased by the institution')
-  ORDER BY random() LIMIT 25000
+--
+WITH
+
+     hmda_2017_approved As
+     ( SELECT
+           1 As action_taken, hm17.as_of_year As action_year,
+           CAST( CAST( CASE WHEN hm17.tract_to_msamd_income IS NULL THEN NULL ELSE hm17.tract_to_msamd_income END
+                          As Varchar(5)
+                      ) As NUMERIC
+               )
+           As tract_to_masamd_income,
+           hm17.population, ROUND(hm17.minority_population, 2) As min_pop_perc,
+           hm17.number_of_owner_occupied_units As num_owoc_units,
+           hm17.number_of_1_to_4_family_units As num_1to4_fam_units,
+           hm17.loan_amount_000s As ln_amt_000s, hm17.hud_median_family_income As hud_med_fm_inc,
+           CAST( CAST( CASE WHEN hm17.applicant_income_000s = '' THEN NULL ELSE hm17.applicant_income_000s END
+                          As Varchar(5)) As INT) As applic_inc_000s,
+           CAST(hm17.owner_occupancy_name As VARCHAR(178)) As own_occ_nm,
+           CAST(hm17.loan_type_name As VARCHAR(56)) As ln_type_nm,
+           CAST(hm17.lien_status_name As VARCHAR(56)) As lien_status_nm,
+           CAST(hm17.hoepa_status_name As VARCHAR(56)) As hoep_status_nm,
+           CAST(hm17.co_applicant_sex_name As VARCHAR(28)) As co_appl_sex,
+           CAST(hm17.co_applicant_race_name_1 As VARCHAR(28)) As co_appl_race,
+           CAST(hm17.co_applicant_ethnicity_name As VARCHAR(28)) As co_appl_ethn,
+           CAST(hm17.co_applicant_sex_name As VARCHAR(28)) As applic_sex,
+           CAST(hm17.applicant_race_name_1 As VARCHAR(28)) As applic_race,
+           CAST(hm17.applicant_ethnicity_name As VARCHAR(28)) As applic_ethn,
+           CAST(hm17.agency_abbr As VARCHAR(28)) As agency_abbr
+       FROM public.hmda_lar_2017_allrecords hm17
+       WHERE hm17.action_taken_name
+                 In ( 'Application approved but not accepted','Loan originated', 'Loan purchased by the institution')
+       ORDER BY random() LIMIT 12500
+     ) ,
+
+     hmda_2017_denied As
+     ( SELECT
+           0 As action_taken, hm17.as_of_year As action_year,
+           CAST( CAST( CASE WHEN hm17.tract_to_msamd_income IS NULL THEN NULL ELSE hm17.tract_to_msamd_income END
+                          As Varchar(5)
+                      ) As NUMERIC
+               )
+           As tract_to_masamd_income,
+           hm17.population, ROUND(hm17.minority_population, 2) As min_pop_perc,
+           hm17.number_of_owner_occupied_units As num_owoc_units,
+           hm17.number_of_1_to_4_family_units As num_1to4_fam_units,
+           hm17.loan_amount_000s As ln_amt_000s, hm17.hud_median_family_income As hud_med_fm_inc,
+           CAST( CAST( CASE WHEN hm17.applicant_income_000s = '' THEN NULL ELSE hm17.applicant_income_000s END
+                          As Varchar(5)) As INT) As applic_inc_000s,
+           CAST(hm17.owner_occupancy_name As VARCHAR(178)) As own_occ_nm,
+           CAST(hm17.loan_type_name As VARCHAR(56)) As ln_type_nm,
+           CAST(hm17.lien_status_name As VARCHAR(56)) As lien_status_nm,
+           CAST(hm17.hoepa_status_name As VARCHAR(56)) As hoep_status_nm,
+           CAST(hm17.co_applicant_sex_name As VARCHAR(28)) As co_appl_sex,
+           CAST(hm17.co_applicant_race_name_1 As VARCHAR(28)) As co_appl_race,
+           CAST(hm17.co_applicant_ethnicity_name As VARCHAR(28)) As co_appl_ethn,
+           CAST(hm17.co_applicant_sex_name As VARCHAR(28)) As applic_sex,
+           CAST(hm17.applicant_race_name_1 As VARCHAR(28)) As applic_race,
+           CAST(hm17.applicant_ethnicity_name As VARCHAR(28)) As applic_ethn,
+           CAST(hm17.agency_abbr As VARCHAR(28)) As agency_abbr
+       FROM public.hmda_lar_2017_allrecords hm17
+       WHERE hm17.action_taken_name  In ('Application denied by financial institution')
+       ORDER BY random() LIMIT 12500
+     ) ,
+
+     hmda_2017_balanced AS
+     ( SELECT hm17_app.* From hmda_2017_approved hm17_app
+            UNION ALL
+       SELECT hm17_den.* FROM hmda_2017_denied hm17_den
+     )
+
+SELECT hm17_bal.*
+INTO interim_datasets.hmda_lar_ii_2017_randsimpl_bal25k
+FROM hmda_2017_balanced hm17_bal
 ;
 /*--------------------------- end HMDA 2017 ---------------------------*/
+
 
 
 
@@ -697,12 +797,12 @@ SELECT
                 WITH
                    hmda_union_2016_2017 AS
                    (
-                     SELECT hm16.* FROM interim_datasets.hmda_lar_2016_simplerand25k hm16
+                     SELECT hm16.* FROM interim_datasets.hmda_lar_ii_2016_simplerand25k hm16
                         UNION ALL
-                     SELECT hm17.* FROM interim_datasets.hmda_lar_2017_simplerand25k hm17
+                     SELECT hm17.* FROM interim_datasets.hmda_lar_ii_2017_simplerand25k hm17
                    )
                 SELECT hm_u.*
-                  INTO interim_datasets.hmda_lar_union_2016_to_2017_simplerand50k
+                  INTO interim_datasets.hmda_lar_ii_union_2016_to_2017_simplerand50k
                   FROM hmda_union_2016_2017 hm_u
                 ;
         /*-------------------------------------------------------------------------------------*/
