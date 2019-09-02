@@ -478,7 +478,7 @@ FROM pg_catalog.pg_class C
 LEFT JOIN pg_catalog.pg_namespace N ON (N.oid = C.relnamespace)
  WHERE (relkind = 'r' OR relkind = 'v')
    AND nspname LIKE 'interim#_datasets' ESCAPE '#'
-   AND relname LIKE 'hmda#_lar#_union#_ii#_2011#_to#_2013#_simplerand#_bal75k' ESCAPE '#'
+   AND relname LIKE 'hmda#_lar#_union#_2011#_to#_2013#_simplerand75k' ESCAPE '#'
 ;
 ---> end of hmda 2011-2013
 
@@ -517,7 +517,7 @@ FROM pg_catalog.pg_class C
 LEFT JOIN pg_catalog.pg_namespace N ON (N.oid = C.relnamespace)
  WHERE (relkind = 'r' OR relkind = 'v')
    AND nspname LIKE 'interim#_datasets' ESCAPE '#'
-   AND relname LIKE 'hmda#_lar#_union#_ii#_2016#_to#_2017#_simplerand#_bal75k' ESCAPE '#'
+   AND relname LIKE 'hmda#_lar#_union#_2016#_to#_2017#_simplerand50k' ESCAPE '#'
 ;
 ---> end of hmda 2016-2017
 
