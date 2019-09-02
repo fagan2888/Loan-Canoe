@@ -802,7 +802,7 @@ FROM hmda_2017_balanced hm17_bal
                      SELECT hm17.* FROM interim_datasets.hmda_lar_ii_2017_randsimpl_bal25k hm17
                    )
                 SELECT hm_u.*
-                  INTO interim_datasets.hmda_lar_ii_union_2016_to_2017_simplerand_bal50k
+                  INTO interim_datasets.hmda_lar_union_ii_2016_to_2017_simplerand_bal50k
                   FROM hmda_union_2016_2017 hm_u
                 ;
         /*-------------------------------------------------------------------------------------*/
@@ -889,7 +889,7 @@ FROM pg_catalog.pg_class C
 LEFT JOIN pg_catalog.pg_namespace N ON (N.oid = C.relnamespace)
  WHERE (relkind = 'r' OR relkind = 'v')
    AND nspname LIKE 'interim#_datasets' ESCAPE '#'
-   AND relname LIKE 'hmda#_lar#_union#_ii#_2016#_to#_2017#_simplerand#_bal75k' ESCAPE '#'
+   AND relname LIKE 'hmda#_lar#_union#_ii#_2016#_to#_2017#_simplerand#_bal50k' ESCAPE '#'
 ;
 ---> end of hmda 2016-2017
 
@@ -900,16 +900,16 @@ LEFT JOIN pg_catalog.pg_namespace N ON (N.oid = C.relnamespace)
                 WITH
                    hmda_union_2010_2017 AS
                    (
-                     SELECT hm10.* FROM interim_datasets.hmda_lar_2010_simplerand25k hm10
+                     SELECT hm10.* FROM interim_datasets.hmda_lar_ii_2010_randsimpl_bal25k hm10
                         UNION ALL
-                     SELECT hm11_13.* FROM interim_datasets.hmda_lar_union_2011_to_2013_simplerand75k hm11_13
+                     SELECT hm11_13.* FROM interim_datasets.hmda_lar_union_ii_2011_to_2013_simplerand_bal75k hm11_13
                         UNION ALL
-                     SELECT hm14_15.* FROM interim_datasets.hmda_lar_union_2014_to_2015_simplerand50k hm14_15
+                     SELECT hm14_15.* FROM interim_datasets.hmda_lar_union_ii_2014_to_2015_simplerand_bal50k hm14_15
                         UNION ALL
-                     SELECT hm16_17.* FROM interim_datasets.hmda_lar_union_2016_to_2017_simplerand50k hm16_17
+                     SELECT hm16_17.* FROM interim_datasets.hmda_lar_union_ii_2016_to_2017_simplerand_bal50k hm16_17
                    )
                 SELECT hm_u.*
-                  INTO interim_datasets.interim_hmda_lar_union_2010_to_2017_simplerand200k
+                  INTO interim_datasets.interim_hmda_lar_union_ii_2010_to_2017_simplerand_bal200k
                   FROM hmda_union_2010_2017 hm_u
                 ;
         /*---------------------------------------------------------------------------------------------------------*/
