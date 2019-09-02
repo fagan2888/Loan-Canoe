@@ -68,17 +68,17 @@ SELECT
                   ) As INT
            )
        As applic_inc_000s,
-      CAST(hm10.owner_occupancy_name As VARCHAR(128)) As own_occ_nm,
-      CAST(hm10.loan_type_name As VARCHAR(56)) As ln_type_nm,
-      CAST(hm10.lien_status_name As VARCHAR(56)) As lien_status_nm,
-      CAST(hm10.hoepa_status_name As VARCHAR(56)) As hoep_status_nm,
-      CAST(hm10.co_applicant_sex_name As VARCHAR(28)) As co_appl_sex,
-      CAST(hm10.co_applicant_race_name_1 As VARCHAR(28)) As co_appl_race,
-      CAST(hm10.co_applicant_ethnicity_name As VARCHAR(28)) As co_appl_ethn,
-      CAST(hm10.co_applicant_sex_name As VARCHAR(28)) As applic_sex,
-      CAST(hm10.applicant_race_name_1 As VARCHAR(28)) As applic_race,
-      CAST(hm10.applicant_ethnicity_name As VARCHAR(28)) As applic_ethn,
-      CAST(hm10.agency_abbr As VARCHAR(28)) As agency_abbr
+       CAST(hm10.owner_occupancy_name As VARCHAR(128)) As own_occ_nm,
+       CAST(hm10.loan_type_name As VARCHAR(56)) As ln_type_nm,
+       CAST(hm10.lien_status_name As VARCHAR(56)) As lien_status_nm,
+       CAST(hm10.hoepa_status_name As VARCHAR(56)) As hoep_status_nm,
+       CAST(hm10.co_applicant_sex_name As VARCHAR(28)) As co_appl_sex,
+       CAST(hm10.co_applicant_race_name_1 As VARCHAR(28)) As co_appl_race,
+       CAST(hm10.co_applicant_ethnicity_name As VARCHAR(28)) As co_appl_ethn,
+       CAST(hm10.co_applicant_sex_name As VARCHAR(28)) As applic_sex,
+       CAST(hm10.applicant_race_name_1 As VARCHAR(28)) As applic_race,
+       CAST(hm10.applicant_ethnicity_name As VARCHAR(28)) As applic_ethn,
+       CAST(hm10.agency_abbr As VARCHAR(28)) As agency_abbr
 
   INTO interim_datasets.hmda_lar_2010_simplerand25k
   FROM paddle_loan_canoe.usa_mortgage_market.hmda_lar_2010_allrecords hm10
@@ -89,7 +89,7 @@ SELECT
                'Loan originated', 'Loan purchased by the institution')
   ORDER BY random() LIMIT 25000
 ;
-/*--------------------------- end HMDA 2009 ---------------------------*/
+/*--------------------------- end HMDA 2010 ---------------------------*/
 
 --> END z_bz_AWS_paddleloancanoe <---
 
