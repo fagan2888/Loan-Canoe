@@ -75,7 +75,8 @@ WITH
                hm10.applicant_sex_name Is Not Null              AND    hm10.applicant_race_name_1 Is Not Null        AND
                hm10.applicant_ethnicity_name Is Not Null        AND    hm10.agency_abbr Is Not Null                  AND
                hm10.loan_amount_000s Is Not Null                AND    hm10.rate_spread Is Not Null                  AND
-               hm10.number_of_1_to_4_family_units Is Not Null   AND    hm10.rate_spread != ''
+               hm10.number_of_1_to_4_family_units Is Not Null   AND    hm10.rate_spread != ''                        AND
+               hm10.msamd_name != ''
              )
        ORDER BY random()
        LIMIT 25000 --random sample of 25000, which we then use to take another random sample of 12500 (CTE: hm_10_u_raw)
@@ -107,7 +108,8 @@ WITH
                hm10.co_applicant_race_name_1 Is Not Null        AND    hm10.co_applicant_ethnicity_name Is Not Null  AND
                hm10.applicant_sex_name Is Not Null              AND    hm10.applicant_race_name_1 Is Not Null        AND
                hm10.applicant_ethnicity_name Is Not Null        AND    hm10.agency_abbr Is Not Null                  AND
-               hm10.loan_amount_000s Is Not Null                AND    hm10.number_of_1_to_4_family_units Is Not Null
+               hm10.loan_amount_000s Is Not Null                AND    hm10.msamd_name != ''                         AND
+               hm10.number_of_1_to_4_family_units Is Not Null
              )
        ORDER BY random()
        LIMIT 25000 --random sample of 25000, which we then use to take another random sample of 12500 (CTE: hm10_u_raw)
@@ -215,7 +217,8 @@ WITH
                hm11.applicant_sex_name Is Not Null              AND    hm11.applicant_race_name_1 Is Not Null        AND
                hm11.applicant_ethnicity_name Is Not Null        AND    hm11.agency_abbr Is Not Null                  AND
                hm11.loan_amount_000s Is Not Null                AND    hm11.rate_spread Is Not Null                  AND
-               hm11.number_of_1_to_4_family_units Is Not Null   AND    hm11.rate_spread != ''
+               hm11.number_of_1_to_4_family_units Is Not Null   AND    hm11.rate_spread != ''                        AND
+               hm11.msamd_name != ''
              )
        ORDER BY random()
        LIMIT 25000 --random sample of 25000, which we then use to take another random sample of 12500 (CTE: hm_11_u_raw)
@@ -247,7 +250,8 @@ WITH
                hm11.co_applicant_race_name_1 Is Not Null        AND    hm11.co_applicant_ethnicity_name Is Not Null  AND
                hm11.applicant_sex_name Is Not Null              AND    hm11.applicant_race_name_1 Is Not Null        AND
                hm11.applicant_ethnicity_name Is Not Null        AND    hm11.agency_abbr Is Not Null                  AND
-               hm11.loan_amount_000s Is Not Null                AND    hm11.number_of_1_to_4_family_units Is Not Null
+               hm11.loan_amount_000s Is Not Null                AND    hm11.msamd_name != ''                         AND
+               hm11.number_of_1_to_4_family_units Is Not Null
              )
        ORDER BY random()
        LIMIT 25000 --random sample of 25000, which we then use to take another random sample of 12500 (CTE: hm11_u_raw)
@@ -343,7 +347,8 @@ WITH
                hm12.applicant_sex_name Is Not Null              AND    hm12.applicant_race_name_1 Is Not Null        AND
                hm12.applicant_ethnicity_name Is Not Null        AND    hm12.agency_abbr Is Not Null                  AND
                hm12.loan_amount_000s Is Not Null                AND    hm12.rate_spread Is Not Null                  AND
-               hm12.number_of_1_to_4_family_units Is Not Null   AND    hm12.rate_spread != ''
+               hm12.number_of_1_to_4_family_units Is Not Null   AND    hm12.rate_spread != ''                        AND
+               hm12.msamd_name != ''
              )
        ORDER BY random()
        LIMIT 25000 --random sample of 25000, which we then use to take another random sample of 12500 (CTE: hm_12_u_raw)
@@ -375,7 +380,8 @@ WITH
                hm12.co_applicant_race_name_1 Is Not Null        AND    hm12.co_applicant_ethnicity_name Is Not Null  AND
                hm12.applicant_sex_name Is Not Null              AND    hm12.applicant_race_name_1 Is Not Null        AND
                hm12.applicant_ethnicity_name Is Not Null        AND    hm12.agency_abbr Is Not Null                  AND
-               hm12.loan_amount_000s Is Not Null                AND    hm12.number_of_1_to_4_family_units Is Not Null
+               hm12.loan_amount_000s Is Not Null                AND    hm12.msamd_name != ''
+               hm12.number_of_1_to_4_family_units Is Not Null
              )
        ORDER BY random()
        LIMIT 25000 --random sample of 25000, which we then use to take another random sample of 12500 (CTE: hm12_u_raw)
@@ -616,7 +622,7 @@ WITH
               hm14.applicant_sex_name, hm14.applicant_race_name_1, hm14.applicant_ethnicity_name,
               --set Null because all denial reasons are null for approved loans
               NULL As denial_reason_name_1, NULL AS denial_reason_name_2, NULL AS denial_reason_name_3
-       FROM public.hmda_lar_2014_allrecords hm14
+       FROM usa_mortgage_market.hmda_lar_2014_allrecords hm14
        WHERE hm14.action_taken_name = 'Loan originated'
          AND hm14.loan_type_name = 'Conventional'
          AND ( --dropping all missing values from our dataset bc they are not missing in any systemic way
@@ -649,7 +655,7 @@ WITH
               hm14.applicant_sex_name, hm14.applicant_race_name_1, hm14.applicant_ethnicity_name,
               --extract all denial reasons to concatenate in the following CTE
               hm14.denial_reason_name_1, hm14.denial_reason_name_2, hm14.denial_reason_name_3
-       FROM public.hmda_lar_2014_allrecords hm14
+       FROM usa_mortgage_market.hmda_lar_2014_allrecords hm14
        WHERE hm14.action_taken_name = 'Application denied by financial institution'
          AND hm14.loan_type_name = 'Conventional'
          AND ( hm14.denial_reason_name_1 Is Not Null Or denial_reason_name_2 Is not Null
@@ -666,7 +672,7 @@ WITH
                hm14.applicant_sex_name Is Not Null              AND    hm14.applicant_race_name_1 Is Not Null        AND
                hm14.applicant_ethnicity_name Is Not Null        AND    hm14.agency_abbr Is Not Null                  AND
                hm14.loan_amount_000s Is Not Null                AND    hm14.applicant_income_000s != ''              AND
-               hm14.number_of_1_to_4_family_units Is Not Null
+               hm14.number_of_1_to_4_family_units Is Not Null   AND    hm14.msamd_name != ''
              )
        ORDER BY random()
        LIMIT 25000 --random sample of 25000, which we then use to take another random sample of 12500 (CTE: hm14_u_raw)
@@ -758,7 +764,8 @@ WITH
                hm15.applicant_sex_name Is Not Null              AND    hm15.applicant_race_name_1 Is Not Null        AND
                hm15.applicant_ethnicity_name Is Not Null        AND    hm15.agency_abbr Is Not Null                  AND
                hm15.loan_amount_000s Is Not Null                AND    hm15.rate_spread Is Not Null                  AND
-               hm15.number_of_1_to_4_family_units Is Not Null   AND    hm15.rate_spread != ''
+               hm15.number_of_1_to_4_family_units Is Not Null   AND    hm15.rate_spread != ''                        AND
+               hm15.msamd_name != ''
              )
        ORDER BY random()
        LIMIT 25000 --random sample of 25000, which we then use to take another random sample of 12500 (CTE: hm_15_u_raw)
@@ -790,7 +797,8 @@ WITH
                hm15.co_applicant_race_name_1 Is Not Null        AND    hm15.co_applicant_ethnicity_name Is Not Null  AND
                hm15.applicant_sex_name Is Not Null              AND    hm15.applicant_race_name_1 Is Not Null        AND
                hm15.applicant_ethnicity_name Is Not Null        AND    hm15.agency_abbr Is Not Null                  AND
-               hm15.number_of_1_to_4_family_units Is Not Null   AND    hm15.loan_amount_000s Is Not Null
+               hm15.number_of_1_to_4_family_units Is Not Null   AND    hm15.loan_amount_000s Is Not Null             AND
+               hm15.msamd_name != ''
 
              )
        ORDER BY random()
@@ -913,7 +921,7 @@ WITH
                hm16.applicant_ethnicity_name Is Not Null        AND    hm16.agency_abbr Is Not Null                  AND
                hm16.loan_amount_000s Is Not Null                AND    hm16.rate_spread Is Not Null                  AND
                hm16.number_of_1_to_4_family_units Is Not Null   AND    hm16.rate_spread != ''                        AND
-               hm16.applicant_income_000s != ''
+               hm16.applicant_income_000s != ''                 AND    hm16.msamd_name != ''
 
              )
        ORDER BY random()
@@ -947,7 +955,7 @@ WITH
                hm16.applicant_sex_name Is Not Null              AND    hm16.applicant_race_name_1 Is Not Null        AND
                hm16.applicant_ethnicity_name Is Not Null        AND    hm16.agency_abbr Is Not Null                  AND
                hm16.loan_amount_000s Is Not Null                AND    hm16.applicant_income_000s != ''              AND
-               hm16.number_of_1_to_4_family_units Is Not Null
+               hm16.number_of_1_to_4_family_units Is Not Null   AND    hm16.msamd_name != ''
              )
        ORDER BY random()
        LIMIT 25000 --random sample of 25000, which we then use to take another random sample of 12500 (CTE: hm16_u_raw)
@@ -1043,7 +1051,7 @@ WITH
                hm17.applicant_ethnicity_name Is Not Null        AND    hm17.agency_abbr Is Not Null                  AND
                hm17.loan_amount_000s Is Not Null                AND    hm17.rate_spread Is Not Null                  AND
                hm17.number_of_1_to_4_family_units Is Not Null   AND    hm17.rate_spread != ''                        AND
-               hm17.applicant_income_000s != ''
+               hm17.applicant_income_000s != ''                 AND    hm17.msamd_name != ''
 
              )
        ORDER BY random()
@@ -1077,7 +1085,7 @@ WITH
                hm17.applicant_sex_name Is Not Null              AND    hm17.applicant_race_name_1 Is Not Null        AND
                hm17.applicant_ethnicity_name Is Not Null        AND    hm17.agency_abbr Is Not Null                  AND
                hm17.loan_amount_000s Is Not Null                AND    hm17.applicant_income_000s != ''              AND
-               hm17.number_of_1_to_4_family_units Is Not Null
+               hm17.number_of_1_to_4_family_units Is Not Null   AND    hm17.msamd_name != ''
              )
        ORDER BY random()
        LIMIT 25000 --random sample of 25000, which we then use to take another random sample of 12500 (CTE: hm17_u_raw)
