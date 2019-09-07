@@ -29,7 +29,7 @@
 
 
 /*--Creating schema and setting users/role for accessibility profiles--*/
-CREATE EXTENSION dblink ;
+CREATE EXTENSION dblink SCHEMA interim_datasets_v2;
 CREATE SCHEMA interim_datasets ;
 CREATE ROLE reporting_user WITH LOGIN PASSWORD 'team_loan_canoe2019' ;
 GRANT USAGE ON SCHEMA interim_datasets TO reporting_user ;
@@ -477,7 +477,8 @@ WITH
                hm13.applicant_sex_name Is Not Null              AND    hm13.applicant_race_name_1 Is Not Null        AND
                hm13.applicant_ethnicity_name Is Not Null        AND    hm13.agency_abbr Is Not Null                  AND
                hm13.loan_amount_000s Is Not Null                AND    hm13.rate_spread Is Not Null                  AND
-               hm13.number_of_1_to_4_family_units Is Not Null   AND    hm13.rate_spread != ''
+               hm13.number_of_1_to_4_family_units Is Not Null   AND    hm13.rate_spread != ''                        AND
+               hm12.msamd_name != ''
              )
        ORDER BY random()
        LIMIT 25000 --random sample of 25000, which we then use to take another random sample of 12500 (CTE: hm_13_u_raw)
@@ -509,7 +510,8 @@ WITH
                hm13.co_applicant_race_name_1 Is Not Null        AND    hm13.co_applicant_ethnicity_name Is Not Null  AND
                hm13.applicant_sex_name Is Not Null              AND    hm13.applicant_race_name_1 Is Not Null        AND
                hm13.applicant_ethnicity_name Is Not Null        AND    hm13.agency_abbr Is Not Null                  AND
-               hm13.loan_amount_000s Is Not Null                AND    hm13.number_of_1_to_4_family_units Is Not Null
+               hm13.loan_amount_000s Is Not Null                AND    hm13.msamd_name != ''                         AND
+               hm13.number_of_1_to_4_family_units Is Not Null
              )
        ORDER BY random()
        LIMIT 25000 --random sample of 25000, which we then use to take another random sample of 12500 (CTE: hm13_u_raw)
@@ -638,7 +640,7 @@ WITH
                hm14.applicant_ethnicity_name Is Not Null        AND    hm14.agency_abbr Is Not Null                  AND
                hm14.loan_amount_000s Is Not Null                AND    hm14.rate_spread Is Not Null                  AND
                hm14.number_of_1_to_4_family_units Is Not Null   AND    hm14.rate_spread != ''                        AND
-               hm14.applicant_income_000s != ''
+               hm14.applicant_income_000s != ''                 AND hm14.msamd_name != ''
 
              )
        ORDER BY random()
@@ -724,7 +726,6 @@ WITH
             UNION ALL
       SELECT hm_a.* FROM(SELECT * FROM hmda_2014_transform WHERE act_outc = 0 ORDER BY random() LIMIT 12500) hm_a
     )
-
 SELECT hm14_u.*
   INTO interim_datasets_v2.hmda14_srandom_bal_25K
   FROM hmda_2014_union hm14_u
@@ -868,7 +869,8 @@ ORDER BY random()
 
 
         /*---------------------------------- Union 2014-2015 ----------------------------------*/
-                ;
+               DROP TABLE IF EXISTS interim_datasets_v2.hmda_2014_2015_union_srandom_bal_50k;
+               ;
                 WITH
                    hmda_union_2014_2015 AS
                    (
