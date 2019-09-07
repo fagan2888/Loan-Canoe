@@ -572,7 +572,7 @@ ORDER BY random()
         /*---------------------------------- Union 2011-2013 ----------------------------------*/
                 ;
                 WITH
-                   hmda_union_2011_to_2016 AS
+                   hmda_union_2011_to_2013 AS
                    (
                      SELECT hm11.* FROM interim_datasets_v2.hmda11_srandom_bal_25k hm11
                         UNION ALL
@@ -581,8 +581,8 @@ ORDER BY random()
                      SELECT hm13.* FROM interim_datasets_v2.hmda13_srandom_bal_25K hm13
                    )
                 SELECT hm_u.*
-                  INTO interim_datasets_v2.hmda_2011_to_2013_union_srandom_bal_50k
-                  FROM hmda_union_2011_to_2016 hm_u
+                  INTO interim_datasets_v2.hmda_2011_to_2013_union_srandom_bal_75k
+                  FROM hmda_union_2011_to_2013 hm_u
                 ;
         /*-------------------------------------------------------------------------------------*/
 
@@ -1251,16 +1251,16 @@ LEFT JOIN pg_catalog.pg_namespace N ON (N.oid = C.relnamespace)
                 WITH
                    hmda_union_2010_2017 AS
                    (
-                     SELECT hm10.* FROM interim_datasets.hmda_lar_ii_2010_randsimpl_bal25k hm10
+                     SELECT hm10.* FROM interim_datasets_v2.hmda10_srandom_bal_25K hm10
                         UNION ALL
-                     SELECT hm11_13.* FROM interim_datasets.hmda_lar_union_ii_2011_to_2013_simplerand_bal75k hm11_13
+                     SELECT hm11_13.* FROM interim_datasets_v2.hmda_2011_to_2013_union_srandom_bal_75k hm11_13
                         UNION ALL
-                     SELECT hm14_15.* FROM interim_datasets.hmda_lar_union_ii_2014_to_2015_simplerand_bal50k hm14_15
+                     SELECT hm14_15.* FROM interim_datasets_v2.hmda_2014_2015_union_srandom_bal_50k hm14_15
                         UNION ALL
-                     SELECT hm16_17.* FROM interim_datasets.hmda_lar_union_ii_2016_to_2017_simplerand_bal50k hm16_17
+                     SELECT hm16_17.* FROM interim_datasets_v2.hmda_2016_2017_union_srandom_bal_50k hm16_17
                    )
                 SELECT hm_u.*
-                  INTO interim_datasets.interim_hmda_union_ii_2010_2015_simplerand_bal200k
+                  INTO interim_datasets_v2.interim_hmda_2010_2017_simplerand_balanced200k
                   FROM hmda_union_2010_2017 hm_u
                 ;
         /*---------------------------------------------------------------------------------------------------------*/
